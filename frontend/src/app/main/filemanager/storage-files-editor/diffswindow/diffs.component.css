@@ -1,9 +1,1 @@
-.button {
-  float: right;
-  margin-left: 5px;
-}
-
-.buttons {
-  margin: 10px 8px 0 0;
-  height: 60px;
-}
+/* Shared dialog layout via nx-button / nx-buttons in themes.css */

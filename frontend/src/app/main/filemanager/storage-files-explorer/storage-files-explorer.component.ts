@@ -6,10 +6,9 @@ import {MESSAGE_TYPE, MessageService} from "../../services/message.service";
 import {jqxExpanderComponent} from "jqwidgets-scripts/jqwidgets-ts/angular_jqxexpander";
 import {GlobalComponentsService} from "../../services/global-components.service";
 import {UtilsService} from "../../services/utils.service";
-import {HttpClient} from "@angular/common/http";
 import {ICONS} from "../../misc/messagebox/messagebox.component";
-import {HttpRequestService} from "../../services/http.requests.service";
 import {AppearanceService} from "../../services/appearance.service";
+import {FileActionsService} from "../../services/file-actions.service";
 
 const DIR_ICON = UI_CONSTANTS.DIR_ICON;
 const FILE_ICON = UI_CONSTANTS.FILE_ICON;
@@ -32,7 +31,7 @@ export class StorageExplorerComponent implements AfterViewInit {
   rightClickSelectedElement: any;
   tabsMap: any = {};
 
-  constructor(private messageService: MessageService, private globalComponentsService: GlobalComponentsService, private httpClient: HttpClient, private http: HttpRequestService) {
+  constructor(private messageService: MessageService, private globalComponentsService: GlobalComponentsService, private fileActions: FileActionsService) {
     this.messageService.getMessage().subscribe(message => {
       this.handleMessages(message);
     });
@@ -320,7 +319,7 @@ export class StorageExplorerComponent implements AfterViewInit {
   loadTreeItems() {
     this.treeSource = [];
 
-    this.httpClient.post<any>(REST_URLS.STORAGE.URLS.TREE_ITEMS, {}).subscribe(
+    this.fileActions.loadTreeItems().subscribe(
       (data: any) => {
         this.expander.disabled(false);
         this.treeSource = data;
@@ -489,7 +488,7 @@ export class StorageExplorerComponent implements AfterViewInit {
         newRelativePath: data.newRelativePath
       };
 
-      this.httpClient.post<any>(REST_URLS.STORAGE.URLS.RENAME, params).subscribe(
+      this.fileActions.renameItem(params.relativePath, params.newRelativePath).subscribe(
         () => {
           this.renameInner(data);
         },
@@ -579,7 +578,7 @@ export class StorageExplorerComponent implements AfterViewInit {
     let param = {
       relativePath: newDirRelativePath
     };
-    this.httpClient.post<any>(REST_URLS.STORAGE.URLS.MAKE_DIR, param).subscribe(
+    this.fileActions.makeDir(newDirRelativePath).subscribe(
       () => {
         this.insertDirItem(StorageExplorerComponent.makeEmptyDirItem(newDirRelativePath, newDirName), this.rightClickSelectedElement);
         this.globalComponentsService.loader.close();
@@ -612,7 +611,7 @@ export class StorageExplorerComponent implements AfterViewInit {
     const params = {
       relativePath: targetItem.value.relativePath
     };
-    this.httpClient.post<any>(REST_URLS.STORAGE.URLS.DELETE, params).subscribe(
+    this.fileActions.deleteItem(params.relativePath).subscribe(
       () => {
         this.tree.removeItem(targetItem);
         this.closeDeletedTabs(targetItem.value);
@@ -999,7 +998,7 @@ export class StorageExplorerComponent implements AfterViewInit {
       dest: data.dropPath
     };
 
-    this.httpClient.post<any>(REST_URLS.STORAGE.URLS.MOVE, params).subscribe(
+    this.fileActions.moveItem(params.source, params.dest).subscribe(
       () => {
         this.moveItemInnerInner(data);
       },
@@ -1110,9 +1109,8 @@ export class StorageExplorerComponent implements AfterViewInit {
       return;
     }
 
-    // loading file content and updating a newFile
     this.globalComponentsService.loader.open();
-    this.http.post({relativePath: sourceRelativePath}, REST_URLS.STORAGE.URLS.LOAD_FILE_FROM_STORAGE, 'json').subscribe(
+    this.fileActions.loadFileContent(sourceRelativePath).subscribe(
       (content: any) => {
         this.messageService.sendMessage(MESSAGE_TYPE.SET_TAB_CONTENT, {
           relativePath: targetRelativePath,

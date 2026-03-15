@@ -74,11 +74,11 @@ DEF_VALUES[confConsts.CONF_FILES.ADMINS] = () => {
 
 // PERMISSIONS default values
 DEF_VALUES[confConsts.CONF_FILES.PERMISSIONS] = () => {
-	logger.log.info('The [%s] file doesn\'t exist in [%s] directory. Creating a new one with read/write permissions for the following users : [%s, %s]', confConsts.CONF_FILES.PERMISSIONS, confMgmt.getNexlAppDataDir(), securityConsts.GUEST_USER, securityConsts.AUTHENTICATED);
+	logger.log.info('The [%s] file doesn\'t exist in [%s] directory. Creating a new one. Guest: read-only. Authenticated: read/write.', confConsts.CONF_FILES.PERMISSIONS, confMgmt.getNexlAppDataDir());
 	const permission = {};
 	permission[securityConsts.GUEST_USER] = {
 		read: true,
-		write: true
+		write: false
 	};
 	permission[securityConsts.AUTHENTICATED] = {
 		read: true,

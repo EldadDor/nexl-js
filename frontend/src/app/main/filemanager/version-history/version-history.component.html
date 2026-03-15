@@ -1,0 +1,55 @@
+<jqxWindow
+  #versionHistoryWindow
+  [width]="750"
+  [height]="560"
+  [autoOpen]="false"
+  [resizable]="true"
+  [isModal]="false"
+  [theme]="theme"
+  [title]="windowTitle"
+  class="main-window"
+>
+  <div>
+    <!-- Header bar -->
+    <div class="nx-form-section">
+      <span class="path-label">File: <strong>{{ filePath }}</strong></span>
+      <jqxButton
+        [width]="90" [height]="28"
+        (click)="loadRevisions()"
+        [textImageRelation]="'imageBeforeText'"
+        [imgSrc]="'./nexl/site/icons/refresh.png'"
+        style="float:right;"
+      >Refresh</jqxButton>
+    </div>
+
+    <!-- Revisions grid -->
+    <div id="versionHistoryGrid" style="width:100%; height:200px; margin-top:4px;"></div>
+
+    <!-- Preview area -->
+    <div class="preview-label" style="display:flex; align-items:center; justify-content:space-between; margin: 6px 0 2px;">
+      <span>{{ isDiffMode ? ('Diff — Rev #' + selectedRevisionNo + ' vs current') : 'Preview (read-only)' }}:</span>
+      <jqxButton
+        [width]="70" [height]="22"
+        [value]="isDiffMode ? 'Preview' : 'Diff'"
+        (click)="toggleDiff()"
+      ></jqxButton>
+    </div>
+    <div id="version-history-preview" style="width:100%; height:240px;"></div>
+
+    <!-- Footer buttons -->
+    <div class="nx-buttons" style="margin-top:6px;">
+      <jqxButton
+        class="nx-button"
+        [width]="90" [height]="28"
+        (click)="close()"
+      >Close</jqxButton>
+      <jqxButton
+        class="nx-button"
+        [width]="110" [height]="28"
+        (click)="restoreSelected()"
+        [textImageRelation]="'imageBeforeText'"
+        [imgSrc]="'./nexl/site/icons/save.png'"
+      >Restore</jqxButton>
+    </div>
+  </div>
+</jqxWindow>

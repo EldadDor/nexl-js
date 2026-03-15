@@ -1,0 +1,14 @@
+.path-label {
+  font-size: var(--font-size-sm, 12px);
+  color: var(--color-text-secondary, #4b5563);
+  display: inline-block;
+  padding-top: 4px;
+}
+
+.preview-label {
+  font-size: var(--font-size-xs, 11px);
+  color: var(--color-text-muted, #9ca3af);
+  margin: 6px 0 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

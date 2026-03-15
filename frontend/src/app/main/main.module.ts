@@ -43,6 +43,10 @@ import {SettingsComponent} from './settingsdialogs/settings/settings.component';
 import {HttpRequestService} from "./services/http.requests.service";
 import {AuthService} from "./services/auth.service";
 import {MessageService} from "./services/message.service";
+import {FileActionsService} from "./services/file-actions.service";
+import {FilePersistenceService} from "./services/file-persistence.service";
+import {TabStateService} from "./services/tab-state.service";
+import {AceWrapperService} from "./services/ace-wrapper.service";
 import {RegisterComponent} from "./authdialogs/register/register.component";
 import {ChangePasswordComponent} from "./authdialogs/changepassword/changepassword.component";
 import {InputBoxComponent} from './misc/inputbox/inputbox.component';
@@ -60,6 +64,7 @@ import {StorageFilesEditorComponent} from "./filemanager/storage-files-editor/st
 import {DiffsConfirmBoxComponent} from "./filemanager/storage-files-editor/diffsconfirmbox/diffsconfirmbox.component";
 import {DiffsComponent} from "./filemanager/storage-files-editor/diffswindow/diffs.component";
 import {StorageExplorerComponent} from "./filemanager/storage-files-explorer/storage-files-explorer.component";
+import {VersionHistoryComponent} from "./filemanager/version-history/version-history.component";
 import {ArgsComponent} from "./filemanager/http-requests-buider-and-tester/args/args.component";
 import {HttpRequestsBuilderAndTesterComponent} from "./filemanager/http-requests-buider-and-tester/http-requests-builder-and-tester.component";
 import {FindInFilesComponent} from "./misc/findinfiles/findinfiles";
@@ -128,7 +133,8 @@ import {HttpRequestsComponent} from "./misc/httprequests/httprequests";
     FindInFilesComponent,
     SearchResultsComponent,
     DiffsComponent,
-    HttpRequestsComponent
+    HttpRequestsComponent,
+    VersionHistoryComponent
   ],
 
   imports: [
@@ -143,6 +149,10 @@ import {HttpRequestsComponent} from "./misc/httprequests/httprequests";
     HttpRequestService,
     MessageService,
     LocalStorageService,
+    FileActionsService,
+    FilePersistenceService,
+    TabStateService,
+    AceWrapperService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHttpInterceptor,

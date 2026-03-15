@@ -12,6 +12,7 @@ const di = require('../../common/data-interchange-constants');
 const confMgmt = require('../../api/conf-mgmt');
 const confConsts = require('../../common/conf-constants');
 const diConsts = require('../../common/data-interchange-constants');
+const versioning = require('../../api/versioning');
 
 const router = express.Router();
 
@@ -499,6 +500,7 @@ router.post(restUtls.STORAGE.URLS.SAVE_FILE_TO_STORAGE, function (req, res, next
 
 	return storageUtils.saveFileToStorage(relativePath, content, fileLoadTime)
 		.then(result => {
+			try{versioning.saveRevision({filePath:relativePath,content:content,savedBy:username});}catch(e){logger.log.error('Failed to save revision: '+e.message);}
 			res.send(result);
 			logger.log.log('verbose', `The [${relativePath}] file is saved by [${username}] user`);
 		})

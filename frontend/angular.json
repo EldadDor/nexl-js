@@ -22,6 +22,7 @@
               "src/app/main/common"
             ],
             "styles": [
+              "src/themes.css",
               "src/styles.css",
               "node_modules/jqwidgets-scripts/jqwidgets/styles/jqx.base.css",
               "node_modules/jqwidgets-scripts/jqwidgets/styles/jqx.dark.css",
@@ -100,6 +101,7 @@
               "src/nexl/site/codemirror/diff_match_patch.js"
             ],
             "styles": [
+              "src/themes.css",
               "src/styles.css",
               "node_modules/jqwidgets-scripts/jqwidgets/styles/jqx.base.css",
               "node_modules/jqwidgets-scripts/jqwidgets/styles/jqx.dark.css",

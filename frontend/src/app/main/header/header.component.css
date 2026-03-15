@@ -1,16 +1,30 @@
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--header-height, 48px);
+  background: var(--color-header-bg, #1e293b);
+  border-bottom: 1px solid var(--color-header-border, #334155);
+  padding: 0 var(--spacing-sm, 8px);
+  box-sizing: border-box;
+}
+
 .app-nexl-logo {
-    float: left;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .app-main-menu {
-    float: left;
-    position: relative;
-    top: 8px;
-    left: 7px;
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-sm, 8px);
+  flex: 1;
 }
 
 .app-auth-menu {
-    float: right;
-    position: relative;
-    top: 8px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 4px);
 }

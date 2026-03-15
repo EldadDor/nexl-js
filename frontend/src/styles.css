@@ -1,9 +1,15 @@
 html, body {
   height: calc(100% - 20px);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  transition: var(--transition-fast);
 }
 
 .app-content {
   height: 100%;
+  background-color: var(--color-bg-primary);
 }
 
 .jqx-loader {

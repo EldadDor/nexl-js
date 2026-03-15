@@ -1,6 +1,7 @@
 .item {
-  float: left;
-  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-xs, 4px);
 }
 
 .user-or-admin-icon {
@@ -8,7 +9,29 @@
 }
 
 .username {
-  position: relative;
-  top: -3px;
   padding-right: 4px;
+  color: var(--color-header-text, #f1f5f9);
+  font-size: var(--font-size-sm, 12px);
+}
+
+.theme-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius, 4px);
+  transition: background-color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.theme-icon {
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-header-text, #f1f5f9);
+  user-select: none;
 }
