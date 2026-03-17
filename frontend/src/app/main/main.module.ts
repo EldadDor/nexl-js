@@ -65,6 +65,7 @@ import {DiffsConfirmBoxComponent} from "./filemanager/storage-files-editor/diffs
 import {DiffsComponent} from "./filemanager/storage-files-editor/diffswindow/diffs.component";
 import {StorageExplorerComponent} from "./filemanager/storage-files-explorer/storage-files-explorer.component";
 import {VersionHistoryComponent} from "./filemanager/version-history/version-history.component";
+import {TabSwitcherComponent} from "./filemanager/tab-switcher/tab-switcher.component";
 import {ArgsComponent} from "./filemanager/http-requests-buider-and-tester/args/args.component";
 import {HttpRequestsBuilderAndTesterComponent} from "./filemanager/http-requests-buider-and-tester/http-requests-builder-and-tester.component";
 import {FindInFilesComponent} from "./misc/findinfiles/findinfiles";
@@ -134,7 +135,8 @@ import {HttpRequestsComponent} from "./misc/httprequests/httprequests";
     SearchResultsComponent,
     DiffsComponent,
     HttpRequestsComponent,
-    VersionHistoryComponent
+    VersionHistoryComponent,
+    TabSwitcherComponent
   ],
 
   imports: [

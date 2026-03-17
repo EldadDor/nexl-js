@@ -1,0 +1,145 @@
+.tab-switcher-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  padding-top: 56px;
+  background: rgba(0, 0, 0, 0.20);
+  align-items: flex-start;
+}
+
+.tab-switcher-panel {
+  background: #ffffff;
+  border: 1px solid #c8c8c8;
+  border-radius: 5px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+  min-width: 500px;
+  max-width: 680px;
+  max-height: 420px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tab-switcher-panel.dark {
+  background: #2b2b2b;
+  border-color: #4a4a4a;
+  color: #d4d4d4;
+}
+
+.tab-switcher-header {
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  border-bottom: 1px solid #e4e4e4;
+  color: #666;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.tab-switcher-panel.dark .tab-switcher-header {
+  background: #363636;
+  border-color: #4a4a4a;
+  color: #999;
+}
+
+.tab-switcher-hint {
+  font-weight: normal;
+  font-size: 10px;
+  color: #aaa;
+  letter-spacing: 0.3px;
+}
+
+.tab-switcher-panel.dark .tab-switcher-hint {
+  color: #666;
+}
+
+.tab-switcher-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.tab-switcher-item {
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  user-select: none;
+}
+
+.tab-switcher-item:hover {
+  background: #eef4ff;
+}
+
+.tab-switcher-item.selected {
+  background: #3d7dd6;
+  color: #ffffff;
+}
+
+.tab-switcher-panel.dark .tab-switcher-item:hover {
+  background: #3a4050;
+}
+
+.tab-switcher-panel.dark .tab-switcher-item.selected {
+  background: #2d5f9e;
+}
+
+.tab-switcher-changed {
+  color: #c0392b;
+  font-weight: bold;
+  font-size: 13px;
+  min-width: 10px;
+  text-align: center;
+}
+
+.tab-switcher-item.selected .tab-switcher-changed {
+  color: #ffb3b3;
+}
+
+.tab-switcher-panel.dark .tab-switcher-changed {
+  color: #e06c75;
+}
+
+.tab-switcher-panel.dark .tab-switcher-item.selected .tab-switcher-changed {
+  color: #ffb3b3;
+}
+
+.tab-switcher-name {
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 120px;
+  max-width: 200px;
+  flex-shrink: 0;
+}
+
+.tab-switcher-path {
+  font-size: 11px;
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.tab-switcher-item.selected .tab-switcher-path {
+  color: #b8d4f8;
+}
+
+.tab-switcher-panel.dark .tab-switcher-path {
+  color: #6a6a6a;
+}
+
+.tab-switcher-panel.dark .tab-switcher-item.selected .tab-switcher-path {
+  color: #85aad4;
+}

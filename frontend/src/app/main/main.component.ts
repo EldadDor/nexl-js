@@ -72,6 +72,27 @@ export class MainComponent implements OnInit, AfterViewInit {
       this.messageService.sendMessage(MESSAGE_TYPE.EVAL_NEXL_EXPRESSION);
       return;
     }
+
+    // is Ctrl+E ? (open tab switcher)
+    if (char === 'e' && event.ctrlKey && !event.shiftKey && !event.altKey) {
+      event.preventDefault();
+      this.messageService.sendMessage(MESSAGE_TYPE.OPEN_TAB_SWITCHER);
+      return;
+    }
+
+    // is Ctrl+Shift+[ ? (previous tab)
+    if (event.which === 219 && event.ctrlKey && event.shiftKey) {
+      event.preventDefault();
+      this.messageService.sendMessage(MESSAGE_TYPE.PREV_TAB);
+      return;
+    }
+
+    // is Ctrl+Shift+] ? (next tab)
+    if (event.which === 221 && event.ctrlKey && event.shiftKey) {
+      event.preventDefault();
+      this.messageService.sendMessage(MESSAGE_TYPE.NEXT_TAB);
+      return;
+    }
   }
 
   interceptHotKeys() {

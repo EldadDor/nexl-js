@@ -1,0 +1,24 @@
+<div class="tab-switcher-overlay" *ngIf="isOpen" (mousedown)="onOverlayClick($event)">
+  <div class="tab-switcher-panel" [class.dark]="isDark">
+
+    <div class="tab-switcher-header">
+      <span>Open Tabs ({{tabs.length}})</span>
+      <span class="tab-switcher-hint">↑↓ &nbsp;·&nbsp; Enter &nbsp;·&nbsp; Esc</span>
+    </div>
+
+    <div class="tab-switcher-list" id="tab-switcher-list">
+      <div
+        *ngFor="let tab of tabs; let i = index"
+        class="tab-switcher-item"
+        [class.selected]="i === selectedIndex"
+        (mousedown)="selectTab(tab)"
+        (mousemove)="selectedIndex = i"
+      >
+        <span class="tab-switcher-changed">{{tab.isChanged ? '*' : '&nbsp;'}}</span>
+        <span class="tab-switcher-name">{{tab.label}}</span>
+        <span class="tab-switcher-path">{{tab.relativePath}}</span>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -126,6 +126,16 @@ export class StorageFilesEditorComponent implements AfterViewInit {
         return;
       }
 
+      case MESSAGE_TYPE.NEXT_TAB: {
+        this.switchTab(1);
+        return;
+      }
+
+      case MESSAGE_TYPE.PREV_TAB: {
+        this.switchTab(-1);
+        return;
+      }
+
       case MESSAGE_TYPE.PRETTIFY_FILE: {
         this.prettifyFile();
         return;
@@ -826,6 +836,32 @@ export class StorageFilesEditorComponent implements AfterViewInit {
 
   sendTabsCountMsg() {
     this.messageService.sendMessage(MESSAGE_TYPE.TABS_COUNT_CHANGED, this.tabs.length());
+  }
+
+  switchTab(direction: number) {
+    const count = this.tabs.length();
+    if (count <= 1) {
+      return;
+    }
+    const current = parseInt(this.tabs.val() as any, 10);
+    const next = (current + direction + count) % count;
+    this.tabs.val(next + '');
+  }
+
+  getAllTabsInfo(): any[] {
+    const activeIndex = parseInt(this.tabs.val() as any, 10);
+    const result = [];
+    for (let index = 0; index < this.tabs.length(); index++) {
+      const idSeqNr = this.resolveTabAttr(index, ID_SEQ_NR);
+      result.push({
+        index: index,
+        relativePath: this.resolveTabAttr(index, RELATIVE_PATH),
+        label: this.getTitleText(idSeqNr),
+        isChanged: this.isTabChanged(idSeqNr),
+        isActive: index === activeIndex
+      });
+    }
+    return result;
   }
 
   saveTabs2LocalStorage() {
