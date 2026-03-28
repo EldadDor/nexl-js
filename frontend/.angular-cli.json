@@ -20,6 +20,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "themes.css",
         "styles.css",
         "../node_modules/jqwidgets-scripts/jqwidgets/styles/jqx.base.css",
         "../node_modules/jqwidgets-scripts/jqwidgets/styles/jqx.dark.css",

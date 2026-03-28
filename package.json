@@ -57,6 +57,7 @@
     "axios": "^0.19.2",
     "base-64": "^0.1.0",
     "bcryptjs": "2.4.3",
+    "better-sqlite3": "^12.6.2",
     "body-parser": "~1.18.2",
     "clone": "^2.1.2",
     "command-line-args": "^4.0.7",

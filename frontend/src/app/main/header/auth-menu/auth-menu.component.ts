@@ -5,6 +5,7 @@ import {MESSAGE_TYPE, MessageService} from "../../services/message.service";
 import {AuthService} from "../../services/auth.service";
 import {GlobalComponentsService} from "../../services/global-components.service";
 import {ICONS} from "../../misc/messagebox/messagebox.component";
+import {Theme, ThemeService} from "../../services/theme.service";
 
 @Component({
   selector: '.app-auth-menu',
@@ -18,6 +19,7 @@ export class AuthMenuComponent implements AfterViewInit {
   isLoginVisible = true;
   username = '';
   isAdmin = false;
+  currentTheme: Theme = ThemeService.get();
 
   constructor(private messageService: MessageService, private authService: AuthService, private globalComponentsService: GlobalComponentsService) {
     this.subscription = this.messageService.getMessage().subscribe(message => {
@@ -60,5 +62,10 @@ export class AuthMenuComponent implements AfterViewInit {
 
   openChangePasswordWindow() {
     this.messageService.sendMessage(MESSAGE_TYPE.OPEN_CHANGE_PASSWORD_WINDOW);
+  }
+
+  toggleTheme() {
+    this.currentTheme = ThemeService.toggle();
+    this.messageService.sendMessage(MESSAGE_TYPE.UPDATE_UI);
   }
 }

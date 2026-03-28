@@ -28,6 +28,12 @@ export class ContentComponent implements AfterViewInit {
   private verticalSplitter: jqxSplitterComponent;
 
   constructor(private messageService: MessageService) {
+    this.messageService.getMessage().subscribe(msg => {
+      if (!msg) { return; }
+      if (msg.type === MESSAGE_TYPE.TOGGLE_BOTTOM_PANEL) {
+        this.toggleBottomPanel();
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -81,6 +87,17 @@ export class ContentComponent implements AfterViewInit {
 
   onVerticalExpanded() {
     this.saveVertical();
+  }
+
+  toggleBottomPanel() {
+    const panels = this.horizontalSplitter.panels();
+    if (panels[1] && panels[1].collapsed) {
+      this.horizontalSplitter.expand();
+    } else {
+      this.horizontalSplitter.collapse();
+    }
+    this.sendResizeMessage();
+    this.horizontalSplitterResized();
   }
 
   private sendResizeMessage() {

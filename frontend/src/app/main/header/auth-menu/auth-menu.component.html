@@ -1,6 +1,9 @@
+<div class="item theme-toggle" (click)="toggleTheme()" [title]="currentTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'">
+  <span class="theme-icon">{{ currentTheme === 'dark' ? '☀' : '🌙' }}</span>
+</div>
+
 <div class="item" [style.display]="isLoginVisible ? '' : 'none'">
   <jqxTooltip [position]="'bottom-left'" [content]="'Register a new nexl user or reset password'" [autoHideDelay]="999999999">
-
     <jqxButton [height]='32'
                [width]='150'
                (click)='openRegisterWindow()'
@@ -10,7 +13,6 @@
     >
       Register/Reset
     </jqxButton>
-
   </jqxTooltip>
 </div>
 
@@ -30,7 +32,6 @@
   <jqxMenu #authMenuRef [height]="31" [showTopLevelArrows]="true">
     <ul>
       <li id="menu-direction">
-
         <span>
           <img src='./nexl/site/icons/crown.png' [style.display]="isAdmin === true ? 'inline' : 'none'"
                class="user-or-admin-icon"/>

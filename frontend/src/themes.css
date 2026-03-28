@@ -1,0 +1,506 @@
+/* ==========================================================================
+   Nexl Design System — CSS Custom Properties
+   Light theme is the default; dark theme applies when data-theme="dark"
+   is set on <html> by ThemeService.
+   ========================================================================== */
+
+/* --- Light Theme (default) --- */
+:root,
+[data-theme="light"] {
+  /* Backgrounds */
+  --color-bg-primary:    #ffffff;
+  --color-bg-secondary:  #f4f5f7;
+  --color-bg-surface:    #fafafa;
+  --color-bg-hover:      #e8eaed;
+
+  /* Borders */
+  --color-border:        #d1d5db;
+  --color-border-subtle: #e5e7eb;
+
+  /* Text */
+  --color-text-primary:   #1a1a2e;
+  --color-text-secondary: #4b5563;
+  --color-text-muted:     #9ca3af;
+  --color-text-inverse:   #ffffff;
+
+  /* Accent / Brand */
+  --color-accent:         #3b82f6;
+  --color-accent-hover:   #2563eb;
+  --color-accent-subtle:  #eff6ff;
+
+  /* Semantic */
+  --color-danger:         #ef4444;
+  --color-danger-subtle:  #fef2f2;
+  --color-success:        #22c55e;
+  --color-success-subtle: #f0fdf4;
+  --color-warning:        #f59e0b;
+  --color-warning-subtle: #fffbeb;
+
+  /* Header */
+  --color-header-bg:      #1e293b;
+  --color-header-text:    #f1f5f9;
+  --color-header-border:  #334155;
+
+  /* Editor / Code */
+  --color-editor-bg:      #fafafa;
+  --color-editor-gutter:  #e5e7eb;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md:   0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg:   0 8px 24px rgba(0, 0, 0, 0.16);
+
+  /* Typography */
+  --font-size-xs:    11px;
+  --font-size-sm:    12px;
+  --font-size-base:  13px;
+  --font-size-md:    14px;
+  --font-size-lg:    16px;
+  --font-family-base: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-family-mono: 'Consolas', 'Courier New', monospace;
+
+  /* Spacing */
+  --spacing-xs:  4px;
+  --spacing-sm:  8px;
+  --spacing-md:  12px;
+  --spacing-lg:  16px;
+  --spacing-xl:  24px;
+  --spacing-2xl: 32px;
+
+  /* Dimensions */
+  --border-radius:     4px;
+  --border-radius-lg:  8px;
+  --header-height:     48px;
+
+  /* Transitions */
+  --transition-fast:   background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* --- Dark Theme --- */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --color-bg-primary:    #0f172a;
+  --color-bg-secondary:  #1e293b;
+  --color-bg-surface:    #162032;
+  --color-bg-hover:      #283548;
+
+  /* Borders */
+  --color-border:        #334155;
+  --color-border-subtle: #243044;
+
+  /* Text */
+  --color-text-primary:   #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted:     #64748b;
+  --color-text-inverse:   #0f172a;
+
+  /* Accent / Brand */
+  --color-accent:         #60a5fa;
+  --color-accent-hover:   #93c5fd;
+  --color-accent-subtle:  #1e3a5f;
+
+  /* Semantic */
+  --color-danger:         #f87171;
+  --color-danger-subtle:  #2d1b1b;
+  --color-success:        #4ade80;
+  --color-success-subtle: #14291a;
+  --color-warning:        #fbbf24;
+  --color-warning-subtle: #2a2010;
+
+  /* Header */
+  --color-header-bg:     #0b1120;
+  --color-header-text:   #f1f5f9;
+  --color-header-border: #1e293b;
+
+  /* Editor / Code */
+  --color-editor-bg:     #0d1a2d;
+  --color-editor-gutter: #1e293b;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md:   0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg:   0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================================
+   Shared Utility Classes
+   Replace per-component repeated CSS patterns across all 20+ dialogs.
+   ========================================================================== */
+
+/* --- Buttons (dialog footer pattern) --- */
+.nx-buttons {
+  margin-top: var(--spacing-md);
+  overflow: hidden;
+}
+
+.nx-button {
+  float: right;
+  margin-left: var(--spacing-sm);
+}
+
+/* --- Form layout --- */
+.nx-form-section {
+  overflow: hidden;
+  padding: var(--spacing-xs) 0;
+}
+
+.nx-form-item {
+  display: flex;
+  align-items: center;
+  margin-top: var(--spacing-md);
+  margin-left: var(--spacing-xl);
+  min-height: 32px;
+}
+
+.nx-form-label {
+  width: 180px;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.nx-form-label--wide {
+  width: 230px;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* --- Containers --- */
+.nx-surface {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+}
+
+/* --- Badges --- */
+.nx-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.nx-badge--info    { background: var(--color-accent);  color: var(--color-text-inverse); }
+.nx-badge--danger  { background: var(--color-danger);  color: var(--color-text-inverse); }
+.nx-badge--success { background: var(--color-success); color: var(--color-text-inverse); }
+.nx-badge--warning { background: var(--color-warning); color: var(--color-text-inverse); }
+
+/* --- Spacing helper --- */
+.nx-space {
+  height: var(--spacing-lg);
+  clear: both;
+}
+
+/* --- Tooltip container --- */
+.nx-tooltip-anchor {
+  display: inline-block;
+  position: relative;
+  float: left;
+  top: 14px;
+  left: -2px;
+}
+
+/* ==========================================================================
+   jqWidgets Light-mode polish — apply CSS variables to core surfaces
+   so both themes look consistent.
+   ========================================================================== */
+
+.jqx-splitter-bar {
+  background-color: var(--color-border) !important;
+  transition: background-color 0.15s ease;
+}
+.jqx-splitter-bar:hover {
+  background-color: var(--color-accent) !important;
+}
+
+/* Smooth transitions on key surfaces */
+.jqx-widget,
+.jqx-widget-content,
+.jqx-fill-state-normal {
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* ==========================================================================
+   Dark Theme — comprehensive jqWidgets overrides
+   Scoped to [data-theme="dark"] so light mode is unaffected.
+   These must use !important because jqWidgets theme CSS loads after us.
+   ========================================================================== */
+
+/* ---- Core widget surfaces ---- */
+[data-theme="dark"] .jqx-widget,
+[data-theme="dark"] .jqx-widget-content,
+[data-theme="dark"] .jqx-widget-header {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ---- Fill states (buttons, tabs, tree items, list rows, etc.) ---- */
+[data-theme="dark"] .jqx-fill-state-normal,
+[data-theme="dark"] .jqx-fill-state-idle {
+  background: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-fill-state-hover {
+  background: var(--color-bg-hover) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-accent) !important;
+}
+[data-theme="dark"] .jqx-fill-state-pressed,
+[data-theme="dark"] .jqx-fill-state-focus {
+  background: var(--color-accent-subtle) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-accent) !important;
+}
+
+/* ---- Splitter ---- */
+[data-theme="dark"] .jqx-splitter,
+[data-theme="dark"] .jqx-splitter-panel {
+  background-color: var(--color-bg-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-splitter-bar {
+  background-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-splitter-bar:hover {
+  background-color: var(--color-accent) !important;
+}
+
+/* ---- Tabs ---- */
+[data-theme="dark"] .jqx-tabs,
+[data-theme="dark"] .jqx-tabs-header,
+[data-theme="dark"] .jqx-tabs-header-content,
+[data-theme="dark"] .jqx-tabs-content,
+[data-theme="dark"] .jqx-tabs-content-element {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-tabs-title {
+  background: var(--color-bg-surface) !important;
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-tabs-title-selected,
+[data-theme="dark"] .jqx-tabs-title-selected-top {
+  background: var(--color-bg-primary) !important;
+  color: var(--color-text-primary) !important;
+  border-bottom-color: var(--color-bg-primary) !important;
+}
+
+/* ---- ACE editor wrapper (tab body div that ACE attaches to) ---- */
+[data-theme="dark"] div[id^="tabs-content-"] {
+  background-color: var(--color-bg-secondary) !important;
+}
+/* ACE editor container and gutter in dark mode (fallback if ace theme takes time to apply) */
+[data-theme="dark"] .ace_editor,
+[data-theme="dark"] .ace_gutter,
+[data-theme="dark"] .ace_scroller {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+/* ---- Tree ---- */
+[data-theme="dark"] .jqx-tree,
+[data-theme="dark"] .jqx-tree-item,
+[data-theme="dark"] .jqx-tree-item-label,
+[data-theme="dark"] .jqx-item {
+  background-color: transparent !important;
+  color: var(--color-text-primary) !important;
+}
+[data-theme="dark"] .jqx-tree-item-hover {
+  background-color: var(--color-bg-hover) !important;
+}
+[data-theme="dark"] .jqx-tree-item-selected {
+  background-color: var(--color-accent-subtle) !important;
+  color: var(--color-accent) !important;
+}
+
+/* ---- Windows / Dialogs ---- */
+[data-theme="dark"] .jqx-window,
+[data-theme="dark"] .jqx-window-content {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-window-header {
+  background: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+/* ---- Expander / NavigationBar ---- */
+[data-theme="dark"] .jqx-expander-header,
+[data-theme="dark"] .jqx-navigationbar-item,
+[data-theme="dark"] .jqx-navigationbar-item-content {
+  background: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-expander-content {
+  background: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-expander-content textarea,
+[data-theme="dark"] .output-textarea {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ---- Ribbon ---- */
+[data-theme="dark"] .jqx-ribbon-item,
+[data-theme="dark"] .jqx-ribbon-item-content,
+[data-theme="dark"] .jqx-ribbon-header {
+  background: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-ribbon-item-selected {
+  background: var(--color-bg-primary) !important;
+  color: var(--color-accent) !important;
+}
+
+/* ---- Menus ---- */
+[data-theme="dark"] .jqx-menu,
+[data-theme="dark"] .jqx-menu-item,
+[data-theme="dark"] .jqx-menu-item-normal {
+  background-color: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-menu-item-hover,
+[data-theme="dark"] .jqx-menu-item-selected {
+  background-color: var(--color-bg-hover) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* ---- Inputs & Combos ---- */
+[data-theme="dark"] .jqx-input,
+[data-theme="dark"] .jqx-input-widget,
+[data-theme="dark"] .jqx-combobox-input,
+[data-theme="dark"] .jqx-combobox-content,
+[data-theme="dark"] .jqx-dropdownlist-state-normal,
+[data-theme="dark"] .jqx-numberinput,
+[data-theme="dark"] .jqx-passwordinput,
+[data-theme="dark"] .jqx-text-area {
+  background: var(--color-bg-primary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ---- Dropdowns ---- */
+[data-theme="dark"] .jqx-dropdownlist-popup,
+[data-theme="dark"] .jqx-combobox-popup,
+[data-theme="dark"] .jqx-listbox,
+[data-theme="dark"] .jqx-listitem-state-normal,
+[data-theme="dark"] .jqx-listitem-element {
+  background-color: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-listitem-state-hover {
+  background-color: var(--color-bg-hover) !important;
+}
+[data-theme="dark"] .jqx-listitem-state-selected {
+  background-color: var(--color-accent-subtle) !important;
+  color: var(--color-accent) !important;
+}
+
+/* ---- Grid ---- */
+[data-theme="dark"] .jqx-grid,
+[data-theme="dark"] .jqx-grid-content,
+[data-theme="dark"] .jqx-grid-column-header,
+[data-theme="dark"] .jqx-grid-column-header-inner {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-grid-cell,
+[data-theme="dark"] .jqx-grid-cell-normal {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border-subtle) !important;
+}
+[data-theme="dark"] .jqx-grid-cell-hover {
+  background-color: var(--color-bg-hover) !important;
+}
+[data-theme="dark"] .jqx-grid-cell-selected,
+[data-theme="dark"] .jqx-grid-cell-selected .jqx-grid-cell-normal {
+  background-color: var(--color-accent-subtle) !important;
+  color: var(--color-accent) !important;
+}
+
+/* ---- Buttons ---- */
+[data-theme="dark"] .jqx-button,
+[data-theme="dark"] .jqx-togglebutton {
+  background: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+  transition: var(--transition-fast);
+}
+[data-theme="dark"] .jqx-button:hover,
+[data-theme="dark"] .jqx-togglebutton:hover {
+  background: var(--color-bg-hover) !important;
+  border-color: var(--color-accent) !important;
+}
+
+/* ---- Scrollbars ---- */
+[data-theme="dark"] .jqx-scrollbar-state-normal,
+[data-theme="dark"] .jqx-scrollbar-thumb-state-normal,
+[data-theme="dark"] .jqx-scrollbar-thumb-state-normal-horizontal {
+  background-color: var(--color-bg-surface) !important;
+  border-color: var(--color-border) !important;
+}
+[data-theme="dark"] .jqx-scrollbar-thumb-state-hover,
+[data-theme="dark"] .jqx-scrollbar-thumb-state-hover-horizontal {
+  background-color: var(--color-border) !important;
+}
+
+/* ---- Loader ---- */
+[data-theme="dark"] .jqx-loader,
+[data-theme="dark"] .jqx-loader-window {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ---- Tooltip ---- */
+[data-theme="dark"] .jqx-tooltip-main,
+[data-theme="dark"] .jqx-tooltip-text {
+  background-color: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ---- Panel ---- */
+[data-theme="dark"] .jqx-panel,
+[data-theme="dark"] .jqx-panel-content {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ---- Checkbox / Radio ---- */
+[data-theme="dark"] .jqx-checkbox-default,
+[data-theme="dark"] .jqx-radiobutton-default {
+  background: var(--color-bg-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ---- Borders global ---- */
+[data-theme="dark"] .jqx-border {
+  border-color: var(--color-border) !important;
+}
+
+/* ---- Page / body background ---- */
+[data-theme="dark"] body,
+[data-theme="dark"] .app-content {
+  background-color: var(--color-bg-primary) !important;
+}

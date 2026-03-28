@@ -32,6 +32,7 @@ const settingsRoute = require('../routes/settings/settings-route');
 const webhooksRoute = require('../routes/webhooks-route');
 const expressionsRoute = require('../routes/expressions/expressions-route');
 const reservedRoute = require('../routes/reserved/reserved-route');
+const versioningRoute = require('../routes/versioning-route');
 
 let nexlApp, httpServer, httpsServer;
 
@@ -89,7 +90,7 @@ function create(interceptors) {
 	nexlApp.use(`/${restUrls.ROOT}/${restUrls.SETTINGS.PREFIX}/`, settingsRoute);
 	nexlApp.use(`/${restUrls.ROOT}/${restUrls.WEBHOOKS.PREFIX}/`, webhooksRoute);
 	nexlApp.use(`/${restUrls.ROOT}/${restUrls.GENERAL.PREFIX}/`, general);
-	nexlApp.use(`/${restUrls.ROOT}/`, reservedRoute);
+	nexlApp.use(`/${restUrls.ROOT}/versioning/`, versioningRoute);nexlApp.use(`/${restUrls.ROOT}/`, reservedRoute);
 	nexlApp.use('/', expressionsRoute);
 
 	// catch 404 and forward to error handler

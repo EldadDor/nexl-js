@@ -12,6 +12,7 @@ export class MainMenuComponent implements AfterViewInit {
   tabsCount = 0;
   hasReadPermission = false;
   hasWritePermission = false;
+  isAdmin = false;
 
   constructor(private messageService: MessageService) {
     this.messageService.getMessage().subscribe(message => {
@@ -29,6 +30,7 @@ export class MainMenuComponent implements AfterViewInit {
         this.mainMenu.disable('main-menu-webhooks', !status.isAdmin);
         this.hasReadPermission = status.hasReadPermission;
         this.hasWritePermission = status.hasWritePermission;
+        this.isAdmin = !!status.isAdmin;
         this.updateSaveMenuItem();
         return;
       }
@@ -52,6 +54,8 @@ export class MainMenuComponent implements AfterViewInit {
 
     this.mainMenu.disable('main-menu-arguments', this.tabsCount < 1 || !this.hasReadPermission);
     this.mainMenu.disable('main-menu-evaluate', this.tabsCount < 1 || !this.hasReadPermission);
+
+    this.mainMenu.disable('main-menu-version-history', this.tabsCount < 1 || !this.isAdmin);
   }
 
   ngAfterViewInit(): void {
@@ -60,6 +64,7 @@ export class MainMenuComponent implements AfterViewInit {
     this.mainMenu.disable('main-menu-users', true);
     this.mainMenu.disable('main-menu-webhooks', true);
     this.mainMenu.disable('main-menu-prettify', true);
+    this.mainMenu.disable('main-menu-version-history', true);
   }
 
   saveFileToStorage() {
@@ -76,6 +81,10 @@ export class MainMenuComponent implements AfterViewInit {
 
   toggleArgsWindow() {
     this.messageService.sendMessage(MESSAGE_TYPE.TOGGLE_ARGS_WINDOW);
+  }
+
+  toggleBottomPanel() {
+    this.messageService.sendMessage(MESSAGE_TYPE.TOGGLE_BOTTOM_PANEL);
   }
 
   evaluateNexlExpression() {
@@ -124,6 +133,10 @@ export class MainMenuComponent implements AfterViewInit {
 
   openQuickStart() {
     this.messageService.sendMessage(MESSAGE_TYPE.OPEN_QUICK_START);
+  }
+
+  openVersionHistory() {
+    this.messageService.sendMessage(MESSAGE_TYPE.OPEN_VERSION_HISTORY_ACTIVE);
   }
 
   webhooks() {

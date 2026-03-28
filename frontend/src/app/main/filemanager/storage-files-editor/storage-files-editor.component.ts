@@ -4,12 +4,15 @@ import {HttpRequestService} from "../../services/http.requests.service";
 import {GlobalComponentsService} from "../../services/global-components.service";
 import {MESSAGE_TYPE, MessageService} from "../../services/message.service";
 import * as $ from 'jquery';
-import {CONFIRM_FILE_SAVE, LocalStorageService, TABS} from "../../services/localstorage.service";
+import {CONFIRM_FILE_SAVE, LocalStorageService} from "../../services/localstorage.service";
+import {TabStateService} from "../../services/tab-state.service";
 import {UtilsService} from "../../services/utils.service";
 import {AppearanceService} from "../../services/appearance.service";
 import {ICONS} from "../../misc/messagebox/messagebox.component";
 import {DiffsConfirmBoxComponent} from "./diffsconfirmbox/diffsconfirmbox.component";
 import {DiffsComponent} from "./diffswindow/diffs.component";
+import {FilePersistenceService} from "../../services/file-persistence.service";
+import {ThemeService} from "../../services/theme.service";
 
 const TABS_CONTENT = 'tabs-content-';
 const TITLE_ID = 'tabs-title-';
@@ -18,6 +21,7 @@ const TITLE_TEXT = 'tabs-title-text-';
 const TITLE_MODIFICATION_ICON = 'tabs-title-modification-icon-';
 const TITLE_CLOSE_ICON = 'tabs-title-close-icon-';
 const TITLE_READ_ONLY_ICON = 'tabs-title-lock-icon-';
+const TITLE_HISTORY_ICON = 'tabs-title-history-icon-';
 const ATTR_IS_NEW_FILE = 'is-new-file';
 const ID_SEQ_NR = 'id-seq-nr';
 const RELATIVE_PATH = 'relative-path';
@@ -41,7 +45,7 @@ export class StorageFilesEditorComponent implements AfterViewInit {
   firstTimeLoad: boolean = true;
   saveTabs2LocalStorageEnabled: boolean = false;
 
-  constructor(private http: HttpRequestService, private globalComponentsService: GlobalComponentsService, private messageService: MessageService) {
+  constructor(private http: HttpRequestService, private globalComponentsService: GlobalComponentsService, private messageService: MessageService, private tabStateService: TabStateService) {
     this.messageService.getMessage().subscribe(message => {
       this.handleMessages(message);
     });
@@ -108,8 +112,27 @@ export class StorageFilesEditorComponent implements AfterViewInit {
         return;
       }
 
+      case MESSAGE_TYPE.OPEN_VERSION_HISTORY_ACTIVE: {
+        const tabNr = this.tabs.val();
+        if (tabNr >= 0) {
+          const relativePath = this.resolveTabAttr(tabNr, RELATIVE_PATH);
+          this.messageService.sendMessage(MESSAGE_TYPE.OPEN_VERSION_HISTORY, relativePath);
+        }
+        return;
+      }
+
       case MESSAGE_TYPE.FILES_TREE_RELOADED: {
         this.filesTreeReloaded();
+        return;
+      }
+
+      case MESSAGE_TYPE.NEXT_TAB: {
+        this.switchTab(1);
+        return;
+      }
+
+      case MESSAGE_TYPE.PREV_TAB: {
+        this.switchTab(-1);
         return;
       }
 
@@ -184,10 +207,12 @@ export class StorageFilesEditorComponent implements AfterViewInit {
 
   updateUI() {
     this.loadUISettings();
+    const theme = this.getAceTheme();
     for (let index = 0; index < this.tabs.length(); index++) {
       const id = this.resolveTabAttr(index, 'id');
       ace.edit(id).setOptions({
-        fontSize: this.fontSize + 'pt'
+        fontSize: this.fontSize + 'pt',
+        theme: theme
       });
     }
   }
@@ -460,6 +485,7 @@ export class StorageFilesEditorComponent implements AfterViewInit {
     this.http.post(data, REST_URLS.STORAGE.URLS.SAVE_FILE_TO_STORAGE, 'json').subscribe(
       (content: any) => {
         this.globalComponentsService.loader.close();
+        this.messageService.sendMessage(MESSAGE_TYPE.FILE_SAVED, relativePath);
         this.saveFileToStorageInnerInner(content, tabInfo);
       },
       (err) => {
@@ -507,7 +533,8 @@ export class StorageFilesEditorComponent implements AfterViewInit {
   }
 
   getAceTheme() {
-    return this.hasWritePermission ? 'ace/theme/xcode' : 'ace/theme/xcode';
+    const isDark = ThemeService.get() === 'dark';
+    return isDark ? 'ace/theme/tomorrow_night' : 'ace/theme/xcode';
   }
 
   writePermissionChanged() {
@@ -596,6 +623,27 @@ export class StorageFilesEditorComponent implements AfterViewInit {
       // is tab already opened ?
       const tabInfo = this.resolveTabInfoByRelativePath(data.relativePath);
       if (tabInfo !== undefined && tabInfo.index >= 0) {
+        if (data.forceReload) {
+          // reload content from disk into the existing open tab
+          this.globalComponentsService.loader.open();
+          this.http.post({relativePath: data.relativePath}, REST_URLS.STORAGE.URLS.LOAD_FILE_FROM_STORAGE, 'json').subscribe(
+            (content: any) => {
+              const contentAsJson = content.body;
+              this.setTabContentAttr(tabInfo.idSeqNr, DI_CONSTANTS.FILE_LOAD_TIME, contentAsJson[DI_CONSTANTS.FILE_LOAD_TIME]);
+              this.setTabContent(tabInfo.idSeqNr, contentAsJson[DI_CONSTANTS.FILE_BODY]);
+              this.changeFileStatus(tabInfo.idSeqNr, false);
+              this.tabs.val(tabInfo.index + '');
+              this.globalComponentsService.loader.close();
+              resolve(tabInfo.idSeqNr);
+            },
+            (err) => {
+              this.globalComponentsService.loader.close();
+              this.globalComponentsService.messageBox.openSimple(ICONS.ERROR, err.statusText);
+              reject();
+            }
+          );
+          return;
+        }
         // making this tab active
         this.tabs.val(tabInfo.index + '');
         this.gotoToLineIfNeeded(data, tabInfo.idSeqNr);
@@ -638,12 +686,13 @@ export class StorageFilesEditorComponent implements AfterViewInit {
     const theTitle = `<span style="position:relative; top: -2px;" id="${TITLE_TEXT}${data.idSeqNr}">${data.label}</span>`;
     const readOnlyIconDisplay = this.hasWritePermission ? 'none' : 'inline-block';
     const readOnlyIcon = `<img style="position:relative; top: 1px; margin-right: 3px;display:${readOnlyIconDisplay}" src="./nexl/site/icons/lock.png" id="${TITLE_READ_ONLY_ICON}${data.idSeqNr}"/>`;
+    const historyIcon = `<span style="position:relative;top:-1px;left:3px;cursor:pointer;font-size:13px;opacity:0.8;user-select:none;" id="${TITLE_HISTORY_ICON}${data.idSeqNr}" title="Version history (Versions menu)">⟳</span>`;
     const closeIcon = `<img style="position:relative; top: 2px; left: 4px;" src="./nexl/site/icons/close.png" id="${TITLE_CLOSE_ICON}${data.idSeqNr}"/>`;
     const attrs = {
       id: `${TITLE_ID}${data.idSeqNr}`
     };
     attrs[ID_SEQ_NR] = data.idSeqNr;
-    return '<span ' + StorageFilesEditorComponent.obj2Array(attrs) + '>' + modified + readOnlyIcon + theTitle + closeIcon + '</span>';
+    return '<span ' + StorageFilesEditorComponent.obj2Array(attrs) + '>' + modified + readOnlyIcon + theTitle + historyIcon + closeIcon + '</span>';
   }
 
   makeBody(data: any) {
@@ -715,6 +764,12 @@ export class StorageFilesEditorComponent implements AfterViewInit {
       this.closeTab(event);
     });
 
+    // binding history icon
+    $(`#${TITLE_HISTORY_ICON}${data.idSeqNr}`).click(() => {
+      const relativePath = this.getTabContentAttr(data.idSeqNr, RELATIVE_PATH);
+      this.messageService.sendMessage(MESSAGE_TYPE.OPEN_VERSION_HISTORY, relativePath);
+    });
+
     // binding tooltip
     jqwidgets.createInstance($(`#${TITLE_ID}${data.idSeqNr}`), 'jqxTooltip', {
       content: `<div style="height: 8px;"></div>Path : [<span style="cursor: pointer; text-decoration: underline" id="${TITLE_TOOLTIP}${data.idSeqNr}">${data.relativePath}</span>]`,
@@ -783,6 +838,32 @@ export class StorageFilesEditorComponent implements AfterViewInit {
     this.messageService.sendMessage(MESSAGE_TYPE.TABS_COUNT_CHANGED, this.tabs.length());
   }
 
+  switchTab(direction: number) {
+    const count = this.tabs.length();
+    if (count <= 1) {
+      return;
+    }
+    const current = parseInt(this.tabs.val() as any, 10);
+    const next = (current + direction + count) % count;
+    this.tabs.val(next + '');
+  }
+
+  getAllTabsInfo(): any[] {
+    const activeIndex = parseInt(this.tabs.val() as any, 10);
+    const result = [];
+    for (let index = 0; index < this.tabs.length(); index++) {
+      const idSeqNr = this.resolveTabAttr(index, ID_SEQ_NR);
+      result.push({
+        index: index,
+        relativePath: this.resolveTabAttr(index, RELATIVE_PATH),
+        label: this.getTitleText(idSeqNr),
+        isChanged: this.isTabChanged(idSeqNr),
+        isActive: index === activeIndex
+      });
+    }
+    return result;
+  }
+
   saveTabs2LocalStorage() {
     if (!this.saveTabs2LocalStorageEnabled) {
       return;
@@ -790,39 +871,31 @@ export class StorageFilesEditorComponent implements AfterViewInit {
 
     const tabs2Save = [];
 
-    // iterating over tabs and gathering info
     for (let index = 0; index < this.tabs.length(); index++) {
-      const tab = {};
-
+      const tab: any = {};
       const tabRelativePath = this.resolveTabAttr(index, RELATIVE_PATH);
       const idSeqNr = this.resolveTabAttr(index, ID_SEQ_NR);
 
       tab[RELATIVE_PATH] = tabRelativePath;
       tab[ATTR_IS_NEW_FILE] = this.isNewFile(idSeqNr);
       tab[IS_CHANGED] = this.isTabChanged(idSeqNr);
-      // storing file load time for changed files only, don't need for newly created file and for unmodified files
       if (tab[IS_CHANGED] && !tab[ATTR_IS_NEW_FILE]) {
         tab[DI_CONSTANTS.FILE_LOAD_TIME] = this.getTabContentAttr(idSeqNr, DI_CONSTANTS.FILE_LOAD_TIME);
       }
       if (tab[IS_CHANGED]) {
         tab[TABS_CONTENT] = this.getTabContent(idSeqNr);
       }
-
-      // according to docs the this.tabs.val() returns string, but sometimes it number ? WTF ???
       if (this.tabs.val().toString() === index.toString()) {
         tab['active'] = true;
       }
-
       tabs2Save.push(tab);
     }
 
-    // saving in local storage
-    LocalStorageService.storeObj(TABS, tabs2Save);
+    this.tabStateService.save(tabs2Save);
   }
 
   loadTabsFromLocalStorage() {
-    // loading tabs
-    let loadedTabs = LocalStorageService.loadObj(TABS, []);
+    let loadedTabs = this.tabStateService.load();
     let activeTab;
     const promise = loadedTabs.reduce(
       (currentPromise, item, index) => {
@@ -832,7 +905,6 @@ export class StorageFilesEditorComponent implements AfterViewInit {
               activeTab = index;
             }
 
-            // is newly created file ?
             if (item[ATTR_IS_NEW_FILE]) {
               this.createNewFile({
                 relativePath: item[RELATIVE_PATH],
@@ -843,35 +915,28 @@ export class StorageFilesEditorComponent implements AfterViewInit {
               return Promise.resolve();
             }
 
-            // it's an existing file, was it changed ?
             if (item[IS_CHANGED]) {
-              // yes, file content was changed, loading
               const newFile = this.createNewFileInner({
                 relativePath: item[RELATIVE_PATH],
                 label: UtilsService.resolveFileName(item[RELATIVE_PATH]),
                 body: item[TABS_CONTENT]
               });
-              // marking this file as [changed]
               this.changeFileStatus(newFile.idSeqNr, true);
-              // setting up file load time
               this.setTabContentAttr(newFile.idSeqNr, DI_CONSTANTS.FILE_LOAD_TIME, item[DI_CONSTANTS.FILE_LOAD_TIME]);
               return Promise.resolve();
             }
 
-            // it's an existing file, loading from server
             return this.loadFileFromStorage({
               relativePath: item[RELATIVE_PATH]
             });
           });
       }, Promise.resolve());
 
-    // after all tabs loaded, choosing active tab
     promise.then(
       _ => {
         if (activeTab !== undefined) {
           this.tabs.val(activeTab);
         }
-
         this.saveTabs2LocalStorageEnabled = true;
       }
     ).catch(_ => {

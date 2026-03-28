@@ -1,7 +1,7 @@
 <div class="main-menu">
   <jqxMenu
     #mainMenuRef
-    [width]="350"
+    [width]="'100%'"
     [height]="30"
     [showTopLevelArrows]="true"
   >
@@ -90,6 +90,25 @@
                  src='./nexl/site/icons/play.png'/>
             <div class="left">Test HTTP request</div>
             <div class="right">F9</div>
+          </li>
+          <li type="separator"></li>
+          <li (click)="toggleBottomPanel()" id="main-menu-toggle-bottom">
+            <img style='float: left; margin-right: 5px;'
+                 src='./nexl/site/icons/cmd-line.png'/>
+            <div class="left">Toggle HTTP panel</div>
+          </li>
+        </ul>
+      </li>
+
+      <!-- ------------------------------------------------------------------------->
+      <!--Versions menu-->
+      <li>
+        <span>Versions</span>
+        <ul style="width:210px;">
+          <li (click)="openVersionHistory()" id="main-menu-version-history">
+            <img style='float: left; margin-right: 5px;'
+                 src='./nexl/site/icons/make-a-copy.png'/>
+            <div class="left">File history</div>
           </li>
         </ul>
       </li>

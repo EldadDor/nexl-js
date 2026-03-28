@@ -22,11 +22,12 @@
     "@angular/platform-browser": "^5.2.9",
     "@angular/platform-browser-dynamic": "^5.2.9",
     "@angular/router": "^5.2.9",
-    "jqwidgets-scripts": "^5.7.2",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
+    "diff": "^4.0.4",
     "fs-extra": "^7.0.0",
     "jquery": "^3.2.1",
+    "jqwidgets-scripts": "^5.7.2",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.19"
   },

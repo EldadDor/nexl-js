@@ -1,5 +1,6 @@
 import {UtilsService} from "./utils.service";
 import {APPEARANCE, LocalStorageService} from "./localstorage.service";
+import {ThemeService} from "./theme.service";
 
 export const THEMES = ['android', 'arctic', 'base', 'black', 'blackberry', 'bootstrap', 'classic', 'dark', 'darkblue', 'energyblue', 'flat', 'fresh', 'glacier', 'highcontrast', 'light', 'metro', 'metrodark', 'mobile', 'office', 'orange', 'shinyblack', 'summer', 'ui-darkness', 'ui-le-frog', 'ui-lightness', 'ui-overcast', 'ui-redmond', 'ui-smoothness', 'ui-start', 'ui-sunny', 'web', 'windowsphone'];
 
@@ -47,6 +48,16 @@ export class AppearanceService {
 
   static save(data: any) {
     LocalStorageService.storeObj(APPEARANCE, data);
+    // Sync the CSS custom-property dark/light layer with the chosen jqWidgets theme
+    if (ThemeService.isDarkJqxTheme(data['theme'])) {
+      ThemeService.set('dark');
+    } else {
+      ThemeService.set('light');
+    }
+  }
+
+  static getTheme(): string {
+    return AppearanceService.load()['theme'];
   }
 
   static validate(item: string, val: any) {
