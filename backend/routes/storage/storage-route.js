@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const j79 = require('j79-utils');
-const nexlEngine = require('nexl-engine');
+const nexlEngine = require('../../nexl-engine/nexl-engine');
 
 const storageUtils = require('../../api/storage-utils');
 const security = require('../../api/security');

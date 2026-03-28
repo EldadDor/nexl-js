@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const zipFolder = require('./zip-a-folder');
 const CronJob = require('cron').CronJob;
-const nexlEngine = require('nexl-engine');
+const nexlEngine = require('../nexl-engine/nexl-engine');
 
 const fsx = require('./fsx');
 const logger = require('./logger');

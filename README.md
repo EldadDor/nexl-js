@@ -7,7 +7,7 @@ Another use case is when you need a centralized place to manage different kind o
 
 #### Features
 
-* JavaScript files [reuse](http://www.nexl-js.com/include-directive.html) on server side (files can include each other)
+* JavaScript filess [reuse](http://www.nexl-js.com/include-directive.html) on server side (files can include each other)
 * Powerful [expression language](http://www.nexl-js.com/introduction.html) to retrieve data from JavaScript files
 * Additionally expression language allows to aggregate data on the fly while retrieving (for example [merging two JavaScript objects](https://www.youtube.com/watch?v=p_dDtJ2BKEo&t=254) and then converting it to [XML/YAML/Property](https://www.youtube.com/watch?v=O_U1lAx4MMs))
 * JavaScript [functions call](https://www.youtube.com/watch?v=c-on-20cZnM) to perform some additional data aggregation

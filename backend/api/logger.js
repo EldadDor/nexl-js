@@ -2,7 +2,7 @@ const path = require('path');
 const winston = require('winston');
 const j79 = require('j79-utils');
 const fse = require('fs-extra');
-const nexlEngine = require('nexl-engine');
+const nexlEngine = require('../nexl-engine/nexl-engine');
 
 const security = require('./security');
 const confMgmt = require('./conf-mgmt');
