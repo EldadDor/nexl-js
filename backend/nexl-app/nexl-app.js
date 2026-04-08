@@ -164,7 +164,10 @@ function startHTTPServer() {
 		});
 
 		// starting http server
-		httpServer.listen(settings[confConsts.SETTINGS.HTTP_PORT], settings[confConsts.SETTINGS.HTTP_BINDING]);
+		const httpPort = parseInt(process.env.SERVER_PORT || process.env.PORT) || settings[confConsts.SETTINGS.HTTP_PORT];
+		const httpBinding = process.env.SERVER_PORT || process.env.PORT ? '0.0.0.0' : settings[confConsts.SETTINGS.HTTP_BINDING];
+		httpServer.listen(httpPort, httpBinding);
+
 	});
 }
 
